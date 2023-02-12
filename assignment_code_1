@@ -1,0 +1,59 @@
+class queue:
+    def __init__(self):
+        self.list1=list()
+        self.count=0
+    def enqueue(self,value):
+        self.list1.append(value)
+        self.count=self.count+1
+    def dequeue(self):
+        self.list1.remove(self.list1[0])
+        self.count=self.count-1
+
+class pcb:
+    def __init__(self,processid,arrival_time,remaining_time):
+        self.pid=processid
+        self.arrival=arrival_time
+        self.remaing=remaining_time
+
+class processor:
+    def __init__(self,pcount,timesharing,preemptive):
+        self.processor_list=list()
+        self.processor_state_list=list()
+        temp=pcount
+        corecount=1
+        while(temp>0):
+            self.processor_list.append(corecount)
+            self.processor_state_list.append(False)
+            corecount=corecount+1
+        self.sharing=timesharing
+        self.preemptive=preemptive
+
+process_number=int(input("Enter the number of unique processes"))
+pcb_list=list()
+for i in range(process_number):
+    arrival_time_process=int(input("Enter the arrival time of process"))
+    estimated_processing_time=int(input("Enter the estimated processing time"))
+    pcb_list[i]=pcb(i,arrival_time_process,estimated_processing_time)
+
+
+class tree:
+    class node:
+        def __init__(self,value):
+            self.value=value
+            self.right=None
+            self.left=None
+    def insert_right(self,parent_node,value):
+        child_node=node(value)
+        parent_node.right=child_node
+    def insert_left(self,parent_node,value):
+        child_node=node(value)
+        parent_node.left
+
+class process:
+    def __init__(self,processor_obj,pcb_obj_heap):
+        self.process_queue = queue()
+    for i in processor_obj.processor_state_list:
+        if(i is False):
+            if(processor_obj.preemptive=False):
+
+
