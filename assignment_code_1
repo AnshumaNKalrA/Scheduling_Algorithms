@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class queue:
     def __init__(self):
         self.list1=list()
@@ -9,51 +11,126 @@ class queue:
         self.list1.remove(self.list1[0])
         self.count=self.count-1
 
+class node:
+    def __init__(self,value):
+        self.value=value
+        self.next=None
+
+class priority_queue:
+    def __init__(self):
+        self.binary_heap=list()
+        self.size=-1
+    def parent(self,i):
+        return (i-1)//2
+    def leftchild(self,i):
+        return ((2*i)+1)
+    def rightchild(self,i):
+        return ((2*i)+2)
+    def shiftUp(self,i):
+        while((i>0) and (self.binary_heap[parent(i)]<self.binary_heap[i])):
+            swap(parent(i),i)
+            i=parent(i)
+    def shiftDown(self,i):
+        maxIndex=i
+        l=leftChild(i)
+        if((l<=self.size) and (self.binary_heap[l]>self.binary_heap[maxIndex])):
+            maxIndex=l
+        r=rightChild(i)
+        if(r<=self.size and self.binary_heap[r] > self.binary_heap[maxIndex]):
+            maxIndex=r
+        if(i ! = maxIndex):
+            swap(i,maxIndex)
+            shiftDown(maxIndex)
+    def insert(self,p):
+        self.size=self.size+1
+        self.binary_heap[size]=p
+        shiftUp(size)
+    def extractMax(self):
+        result=self.binary_heap[0]
+        self.binary_heap[0]=self.binary_heap[size]
+        self.size=self.size-1
+        shiftDown(0)
+        return result
+    def changePriority(self,i,p):
+        oldp=self.binary_heap[i]
+        self.binary_heap[i]=p
+        if(p>oldp):
+            shiftUp(i)
+        else:
+            shiftDown(i)
+    def getmax(self):
+        return self.binary_heap[0]
+    def remove(self,i):
+        self.binary_heap[i]=getMax()+1
+        shiftUp(i)
+        extractMax()
+    def swap(self,i,j):
+        temp=self.binary_heap[i]
+        self.binary_heap[i]=self.binary_heap[j]
+        self.binary_heap[j]=temp
+
 class pcb:
     def __init__(self,processid,arrival_time,remaining_time):
         self.pid=processid
         self.arrival=arrival_time
-        self.remaing=remaining_time
+        self.remaining=remaining_time
 
 class processor:
-    def __init__(self,pcount,timesharing,preemptive):
-        self.processor_list=list()
-        self.processor_state_list=list()
-        temp=pcount
-        corecount=1
-        while(temp>0):
-            self.processor_list.append(corecount)
-            self.processor_state_list.append(False)
-            corecount=corecount+1
+    class process:
+        def __init__(self,processor_obj,pcb_obj_heap):
+            self.process_heap = priority_queue()
+    def __init__(self,timesharing,preemptive):
+        self.state=False
         self.sharing=timesharing
         self.preemptive=preemptive
+    def processing(self,pcbobject):
+        self.process_heap.insert
+        self.processtimeremaining = pcbobject.remaining
+        if(self.sharing>0):
+            start=datetime.now()
+            while(True):
+                pcbobject.remaining=pcbobject.remaining-((datetime.now()-start).total_seconds())
+                if((datetime.now()-start).total_seconds() == self.sharing):
+                    break
+        else:
+            if(preemptive=True):
+                start=datetime.now()
+                while(True):
+                    time_between=pcbobject.next.arrival-pcbobject.arrival
+                    if((pcbobject.next.arrival-pcbobject.arrival)==((datetime.now()-start).total_seconds//60)):
+                        pcbobject.remaining=pcbobject.remaining-time_between
+                        break
+            else:
+                pass
+
+
 
 process_number=int(input("Enter the number of unique processes"))
-pcb_list=list()
+pcb_list=node()
+temp=pcb_list
 for i in range(process_number):
     arrival_time_process=int(input("Enter the arrival time of process"))
     estimated_processing_time=int(input("Enter the estimated processing time"))
-    pcb_list[i]=pcb(i,arrival_time_process,estimated_processing_time)
+    temp.value=pcb(i,arrival_time_process,estimated_processing_time)
+    newnode=node()
+    temp.next=newnode
+    temp=temp.next
+    
+
+pcount=int(input("Enter the number of processors"))
+processors_obj_list=list()
+timesharing=int(input("Enter the timesharing if applicable , else enter 0"))
+emptive=input("Enter y for preemptive and n for non preemptive")
+if(emptive == 'y'):
+    preemptive=True
+elif(emptive == 'n'):
+    preemptive=False
+for i in range(pcount):
+    processor_obj=processor(timesharing,preemptive)
+    processors_obj_list.append(processor_obj)
 
 
-class tree:
-    class node:
-        def __init__(self,value):
-            self.value=value
-            self.right=None
-            self.left=None
-    def insert_right(self,parent_node,value):
-        child_node=node(value)
-        parent_node.right=child_node
-    def insert_left(self,parent_node,value):
-        child_node=node(value)
-        parent_node.left
 
-class process:
-    def __init__(self,processor_obj,pcb_obj_heap):
-        self.process_queue = queue()
-    for i in processor_obj.processor_state_list:
-        if(i is False):
-            if(processor_obj.preemptive=False):
+    
 
 
