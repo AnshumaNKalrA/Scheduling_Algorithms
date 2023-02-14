@@ -1,4 +1,7 @@
 from datetime import datetime
+import matplotlib as mpl
+import matplotlib.pyplt as plt
+import numpy as np
 
 class queue:
     def __init__(self):
@@ -16,6 +19,11 @@ class node:
         self.value=value
         self.next=None
 
+class priorityqueue_node:
+    def __init__(self,pcbobj):
+        self.pid=pcbobj.pid
+        self.priorityval=pcbobj.remaining
+
 class priority_queue:
     def __init__(self):
         self.binary_heap=list()
@@ -27,46 +35,49 @@ class priority_queue:
     def rightchild(self,i):
         return ((2*i)+2)
     def shiftUp(self,i):
-        while((i>0) and (self.binary_heap[parent(i)]<self.binary_heap[i])):
+        while((i>0) and (self.binary_heap[parent(i)].priorityval>self.binary_heap[i].priorityval)):
             swap(parent(i),i)
             i=parent(i)
     def shiftDown(self,i):
-        maxIndex=i
+        minIndex=i
         l=leftChild(i)
-        if((l<=self.size) and (self.binary_heap[l]>self.binary_heap[maxIndex])):
-            maxIndex=l
+        if((l<=self.size) and (self.binary_heap[l].priorityval<self.binary_heap[maxIndex].priorityval)):
+            minIndex=l
         r=rightChild(i)
-        if(r<=self.size and self.binary_heap[r] > self.binary_heap[maxIndex]):
-            maxIndex=r
+        if(r<=self.size and self.binary_heap[r].priorityval < self.binary_heap[maxIndex].priorityval):
+            minIndex=r
         if(i ! = maxIndex):
-            swap(i,maxIndex)
-            shiftDown(maxIndex)
-    def insert(self,p):
+            swap(i,minIndex)
+            shiftDown(minIndex)
+    def insert(self,priorityqueuenode):
         self.size=self.size+1
-        self.binary_heap[size]=p
+        tempobj=pcb(priorityqueuenode.pid,0,priorityqueuenode.prioirtyval)
+        self.binary_heap[size]=priorityqueue_node(tempobj)
         shiftUp(size)
-    def extractMax(self):
-        result=self.binary_heap[0]
+    def extractMin(self):
+        result=self.binary_heap[0].priorityval
         self.binary_heap[0]=self.binary_heap[size]
         self.size=self.size-1
         shiftDown(0)
         return result
     def changePriority(self,i,p):
-        oldp=self.binary_heap[i]
-        self.binary_heap[i]=p
+        oldp=self.binary_heap[i].priorityval
+        self.binary_heap[i].priorityval=p
         if(p>oldp):
             shiftUp(i)
         else:
             shiftDown(i)
-    def getmax(self):
-        return self.binary_heap[0]
+    def getmin(self):
+        return self.binary_heap[0].priorityvalue
     def remove(self,i):
         self.binary_heap[i]=getMax()+1
         shiftUp(i)
         extractMax()
     def swap(self,i,j):
-        temp=self.binary_heap[i]
-        self.binary_heap[i]=self.binary_heap[j]
+        tempobj=pcb(self.binary_heap[i].pid,0,self.binary_heap.priorityvalue)
+        tempobj2=pcb(self.binary_heap[j].pid,0,self.binary_heap.priorityvalue)
+        temp=priorityqueue_node(tempobj)
+        self.binary_heap[i]=priorityqueue_node(tempobj2)
         self.binary_heap[j]=temp
 
 class pcb:
@@ -75,33 +86,52 @@ class pcb:
         self.arrival=arrival_time
         self.remaining=remaining_time
 
+
 class processor:
-    class process:
-        def __init__(self,processor_obj,pcb_obj_heap):
-            self.process_heap = priority_queue()
     def __init__(self,timesharing,preemptive):
         self.state=False
         self.sharing=timesharing
         self.preemptive=preemptive
-    def processing(self,pcbobject):
-        self.process_heap.insert
-        self.processtimeremaining = pcbobject.remaining
-        if(self.sharing>0):
-            start=datetime.now()
-            while(True):
-                pcbobject.remaining=pcbobject.remaining-((datetime.now()-start).total_seconds())
-                if((datetime.now()-start).total_seconds() == self.sharing):
-                    break
-        else:
-            if(preemptive=True):
+
+    class process:
+        def __init__(self):
+            self.process_heap = priority_queue()
+
+        def processing(self,pcbobject):
+            counter=process_number
+            while(counter>0)
+            self.process_heap.insert(priorityqueue_node(pcbobject.value))
+            current_process=self.process_heap.extractMin()
+            if(self.sharing>0):
                 start=datetime.now()
                 while(True):
-                    time_between=pcbobject.next.arrival-pcbobject.arrival
-                    if((pcbobject.next.arrival-pcbobject.arrival)==((datetime.now()-start).total_seconds//60)):
-                        pcbobject.remaining=pcbobject.remaining-time_between
+                    current_process.priorityval=current_process.priorityval-((datetime.now()-start).total_seconds())//60
+                    if((datetime.now()-start).total_seconds()//60 == self.sharing):
+                        current_process.priorityval=current_process.priorityval-((datetime.now()-start).total_seconds())//60
                         break
+                    if(current_process.priorityval is not 0):
+                        self.process_heap.insert(current_process)
             else:
-                pass
+                    if(preemptive=True):
+                        flag=0
+                        start=datetime.now()
+                        while(True):
+                            time_between=pcbobject.next.value.arrival-pcbobject.value.arrival
+                            if((pcbobject.next.arrival-pcbobject.arrival)==((datetime.now()-start).total_seconds//60)):
+                                current_process.priorityval=current_process.priorityval-time_between
+                                flag=1
+                                break
+                            if(flag==1):
+                                self.process_heap.insert(priorityqueue_node(pcbobject.next.value))
+                                self.process_heap.insert(current_process)
+                            if(current_process.priorityvalue==0):
+                                self.process_heap.remove(0)
+                                counter=counter-1
+                    else:
+                        while(True):
+                            current_process.
+                    
+
 
 
 
@@ -111,7 +141,7 @@ temp=pcb_list
 for i in range(process_number):
     arrival_time_process=int(input("Enter the arrival time of process"))
     estimated_processing_time=int(input("Enter the estimated processing time"))
-    temp.value=pcb(i,arrival_time_process,estimated_processing_time)
+    temp.value=pcb(i+1,arrival_time_process,estimated_processing_time)
     newnode=node()
     temp.next=newnode
     temp=temp.next
@@ -128,9 +158,3 @@ elif(emptive == 'n'):
 for i in range(pcount):
     processor_obj=processor(timesharing,preemptive)
     processors_obj_list.append(processor_obj)
-
-
-
-    
-
-
